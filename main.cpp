@@ -50,7 +50,7 @@ public:
 
             team = Team2;
         } else {
-            cout << "incorrect team number" << endl;
+            cout << "incorrect team number!" << endl;
             return;
         }
 
