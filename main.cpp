@@ -76,24 +76,64 @@ public:
     }
 };
 
+class Combat {
+public:
+    void Fight(Gracz& player1, Gracz& player2) {
+        cout << "FIGHT!" << endl;
+        cout << "Player 1: " << player1.name << " vs Player 2: " << player2.name << endl;
+
+        while (player1.hp > 0 && player2.hp > 0) {
+            player2.hp -= player1.dmg;
+            cout << player1.name << " deals " << player1.dmg << " damage to " << player2.name << endl;
+            cout << player2.name << " HP: " << player2.hp << endl;
+
+            if (player2.hp <= 0) {
+                cout << player2.name << " has been defeated!" << endl;
+                break;
+            }
+
+            player1.hp -= player2.dmg;
+            cout << player2.name << " deals " << player2.dmg << " damage to " << player1.name << endl;
+            cout << player1.name << " HP: " << player1.hp << endl;
+            
+            int option;
+            cout << "press 1 to continue or 2 to exit: ";
+            cin >> option;
+            if(option == 2){
+                break;
+            }
+
+            if (player1.hp <= 0) {
+                cout << player1.name << " has been defeated!" << endl;
+                break;
+            }
+        }
+    }
+};
+
+
 int main() {
-    Teams teams;
+    Teams T;
+    Combat C;
 
-    teams.AddToTeam1("Jan", 5, 100);
-    teams.AddToTeam1("Anna", 8, 200);
-    teams.AddToTeam1("Kamil", 3, 50);
+    T.AddToTeam1("Jan", 5, 100);
+    T.AddToTeam1("Anna", 8, 200);
+    T.AddToTeam1("Kamil", 3, 50);
 
-    teams.AddToTeam2("Kamil", 3, 50);
-    teams.AddToTeam2("Kamil", 3, 50);
-    teams.AddToTeam2("Kamil", 3, 50);
+    T.AddToTeam2("Kamila", 3, 50);
+    T.AddToTeam2("fryzjer", 3, 50);
+    T.AddToTeam2("tomek", 3, 50);
 
-    teams.Team1[0].AddItem(Item("Sword", 10));
-    teams.Team1[1].AddItem(Item("Axe", 12));
-    teams.Team2[0].AddItem(Item("Bow", 7));
-    teams.Team2[2].AddItem(Item("Wand", 5));
+    T.Team1[0].AddItem(Item("Sword", 10));
+    T.Team1[1].AddItem(Item("Axe", 12));
+    T.Team2[0].AddItem(Item("Bow", 7));
+    T.Team2[2].AddItem(Item("Wand", 5));
 
-    teams.ShowTeam(1);
-    teams.ShowTeam(2);
+    T.ShowTeam(1);
+    T.ShowTeam(2);
+    
+    C.Fight(T.Team1[0], T.Team2[1]);
+
 
     return 0;
 }
