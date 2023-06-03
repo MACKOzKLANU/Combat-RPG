@@ -12,50 +12,54 @@ public:
     Item(string name, int dmg) : name(name), dmg(dmg) {}
 };
 
-class Gracz {
+class Playerc {
 public:
     string name;
     int dmg;
     int hp;
     vector<Item> items;
 
-    Gracz(string name, int dmg, int hp) : name(name), dmg(dmg), hp(hp) {}
+    Playerc(string name, int dmg, int hp) : name(name), dmg(dmg), hp(hp) {}
 
     void AddItem(const Item& item) {
         items.push_back(item);
     }
 };
 
+class Combat;
+
 class Teams {
 public:
-    vector<Gracz> Team1;
-    vector<Gracz> Team2;
+    vector<Playerc> Team1;
+    vector<Playerc> Team2;
 
     void AddToTeam1(string name, int dmg, int hp) {
-        Team1.push_back(Gracz(name, dmg, hp));
+        Team1.push_back(Playerc(name, dmg, hp));
     }
 
     void AddToTeam2(string name, int dmg, int hp) {
-        Team2.push_back(Gracz(name, dmg, hp));
+        Team2.push_back(Playerc(name, dmg, hp));
     }
 
     void ShowTeam(int teamNumber) {
-        
-        vector<Gracz> team;
+
+        vector<Playerc> team;
         if (teamNumber == 1) {
             cout << "===TEAM1=== \n";
             team = Team1;
-        } else if (teamNumber == 2) {
+        }
+        else if (teamNumber == 2) {
             cout << "===TEAM2=== \n";
 
             team = Team2;
-        } else {
+        }
+        else {
             cout << "incorrect team number!" << endl;
             return;
         }
 
         for (int i = 0; i < team.size(); i++) {
-            const Gracz& player = team[i];
+            const Playerc& player = team[i];
             cout << "name: " << player.name << endl;
             cout << "dmg: " << player.dmg << endl;
             cout << "hp: " << player.hp << endl;
@@ -68,17 +72,35 @@ public:
                     cout << "  dmg: " << item.dmg << endl;
                 }
             }
-            else{
+            else {
                 cout << "  no items \n";
             }
         }
 
     }
+
+    int SelectPlayer(int teamNumber) {
+        vector<Playerc>& team = (teamNumber == 1) ? Team1 : Team2;
+
+        cout << "Select a player " << teamNumber << ":" << endl;
+        for (int i = 0; i < team.size(); i++) {
+            cout << i + 1 << ". " << team[i].name << endl;
+        }
+
+        int playerIndex;
+        cout << "Enter player index: ";
+        cin >> playerIndex;
+
+        return playerIndex - 1;
+    }
+
+    void Fight();
+
 };
 
 class Combat {
 public:
-    void Fight(Gracz& player1, Gracz& player2) {
+    void Fight(Playerc& player1, Playerc& player2) {
         cout << "FIGHT!" << endl;
         cout << "Player 1: " << player1.name << " vs Player 2: " << player2.name << endl;
 
@@ -95,11 +117,11 @@ public:
             player1.hp -= player2.dmg;
             cout << player2.name << " deals " << player2.dmg << " damage to " << player1.name << endl;
             cout << player1.name << " HP: " << player1.hp << endl;
-            
+
             int option;
             cout << "press 1 to continue or 2 to exit: ";
             cin >> option;
-            if(option == 2){
+            if (option == 2) {
                 break;
             }
 
@@ -111,18 +133,49 @@ public:
     }
 };
 
+void Teams::Fight() {
+    int team1Index = SelectPlayer(1);
+    int team2Index = SelectPlayer(2);
+
+    if (team1Index >= 0 && team1Index < Team1.size() && team2Index >= 0 && team2Index < Team2.size()) {
+        Combat C;
+        C.Fight(Team1[team1Index], Team2[team2Index]);
+    }
+    else {
+        cout << "Invalid player index!" << endl;
+    }
+}
+
+class Game{
+public:
+    void Start(){
+        int gameoption;
+        cout << "press 1 to start game, 2 to exit: \n";
+        cin >> gameoption;
+        if(gameoption == 1){
+            cout << "Start!\n";
+        }
+        else if(gameoption == 2){
+            cout << "bye!\n";
+            exit(0);
+        }
+    }
+  
+    
+};
 
 int main() {
     Teams T;
-    Combat C;
+    Game G;
+    G.Start();
 
-    T.AddToTeam1("Jan", 5, 100);
-    T.AddToTeam1("Anna", 8, 200);
-    T.AddToTeam1("Kamil", 3, 50);
+    T.AddToTeam1("John", 5, 100);
+    T.AddToTeam1("Annie", 8, 200);
+    T.AddToTeam1("Andrew", 3, 50);
 
-    T.AddToTeam2("Kamila", 3, 50);
-    T.AddToTeam2("fryzjer", 3, 50);
-    T.AddToTeam2("tomek", 3, 50);
+    T.AddToTeam2("Angeline'a", 3, 50);
+    T.AddToTeam2("Hairdresser", 3, 50);
+    T.AddToTeam2("Tom", 3, 50);
 
     T.Team1[0].AddItem(Item("Sword", 10));
     T.Team1[1].AddItem(Item("Axe", 12));
@@ -131,9 +184,8 @@ int main() {
 
     T.ShowTeam(1);
     T.ShowTeam(2);
-    
-    C.Fight(T.Team1[0], T.Team2[1]);
 
+    T.Fight();
 
     return 0;
 }
