@@ -19,7 +19,7 @@ public:
     int hp;
     vector<Item> items;
 
-    Playerc(string name, int dmg, int hp) : name(name), dmg(dmg), hp(hp) {}
+    Playerc(string name, int dmg, int hp) : name(name), dmg(dmg), hp(hp){ } 
 
     void AddItem(const Item& item) {
         items.push_back(item);
@@ -45,11 +45,13 @@ public:
 
         vector<Playerc> team;
         if (teamNumber == 1) {
-            cout << "===TEAM1=== \n";
+            printf("\x1B[31m==========TEAM1========== \033[0m\t\t");
+
             team = Team1;
         }
         else if (teamNumber == 2) {
-            cout << "===TEAM2=== \n";
+            printf("\x1B[31m==========TEAM2==========\n\033[0m\t\t");
+
 
             team = Team2;
         }
@@ -60,36 +62,50 @@ public:
 
         for (int i = 0; i < team.size(); i++) {
             const Playerc& player = team[i];
+            cout << "\n=========INFO=============" << endl;
+
             cout << "name: " << player.name << endl;
             cout << "dmg: " << player.dmg << endl;
             cout << "hp: " << player.hp << endl;
+            cout << "==========================" << endl;
+
 
             if (!player.items.empty()) {
-                cout << "Items:" << endl;
+                cout << "==========ITEMS===========" << endl;
+
                 for (int j = 0; j < player.items.size(); j++) {
                     const Item& item = player.items[j];
                     cout << "  name: " << item.name << endl;
                     cout << "  dmg: " << item.dmg << endl;
+                    cout << "==========================" << endl;
+
                 }
             }
             else {
-                cout << "  no items \n";
+                cout << "=========No items=========" << endl;
+
             }
         }
 
     }
 
+        
+        
     int SelectPlayer(int teamNumber) {
         vector<Playerc>& team = (teamNumber == 1) ? Team1 : Team2;
 
-        cout << "Select a player " << teamNumber << ":" << endl;
+        cout << "=====Select player " << teamNumber << " =====" << endl;
         for (int i = 0; i < team.size(); i++) {
             cout << i + 1 << ". " << team[i].name << endl;
         }
 
         int playerIndex;
+        cout << "==========================" << endl;
+
         cout << "Enter player index: ";
         cin >> playerIndex;
+        system("clear");
+
 
         return playerIndex - 1;
     }
@@ -101,13 +117,21 @@ public:
 class Combat {
 public:
     void Fight(Playerc& player1, Playerc& player2) {
-        cout << "FIGHT!" << endl;
+        
+        cout << "==========FIGHT===========" << endl;
+
         cout << "Player 1: " << player1.name << " vs Player 2: " << player2.name << endl;
 
         while (player1.hp > 0 && player2.hp > 0) {
             player2.hp -= player1.dmg;
+            cout << "==========================" << endl;
+
             cout << player1.name << " deals " << player1.dmg << " damage to " << player2.name << endl;
+            cout << "==========================" << endl;
+
             cout << player2.name << " HP: " << player2.hp << endl;
+            cout << "==========================" << endl;
+
 
             if (player2.hp <= 0) {
                 cout << player2.name << " has been defeated!" << endl;
@@ -117,17 +141,19 @@ public:
             player1.hp -= player2.dmg;
             cout << player2.name << " deals " << player2.dmg << " damage to " << player1.name << endl;
             cout << player1.name << " HP: " << player1.hp << endl;
+            cout << "==========================" << endl;
+
 
             int option;
-            cout << "press 1 to continue or 2 to exit or 3 to save: ";
+            cout << "press 1 to continue or 2 to exit: ";
             cin >> option;
+            system("clear");
+
 
             if (option == 2) {
                 break;
             }
-            else if (option == 3){
-                
-            }
+            
 
             if (player1.hp <= 0) {
                 cout << player1.name << " has been defeated!" << endl;
@@ -154,10 +180,15 @@ class Game{
 public:
     void Start(){
         int gameoption;
-        cout << "press 1 to start game, 2 to exit: \n";
+        cout << "========== MENU ==========" << endl;
+        cout << "1. Start" << endl;
+        cout << "2. Exit" << endl;
+
+        cout << "==========================" << endl;
         cin >> gameoption;
+        system("clear");
+
         if(gameoption == 1){
-            cout << "Start!\n";
             Teams T;
             T.AddToTeam1("John", 5, 100);
             T.AddToTeam1("Annie", 8, 200);
@@ -175,10 +206,15 @@ public:
             T.ShowTeam(1);
             T.ShowTeam(2);
             cout << "do you want to FIGHT!?" << endl;
-            cout << "press 1 to say yes or 2 to say no." << endl;
+            cout << "1. Yes" << endl;
+            cout << "2. No" << endl;
+            cout << "==========================" << endl;
+
             
             int yesno;
             cin >> yesno;
+            system("clear");
+
             if(yesno == 1){
                 T.Fight();
 
