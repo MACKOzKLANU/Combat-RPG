@@ -119,10 +119,14 @@ public:
             cout << player1.name << " HP: " << player1.hp << endl;
 
             int option;
-            cout << "press 1 to continue or 2 to exit: ";
+            cout << "press 1 to continue or 2 to exit or 3 to save: ";
             cin >> option;
+
             if (option == 2) {
                 break;
+            }
+            else if (option == 3){
+                
             }
 
             if (player1.hp <= 0) {
@@ -154,38 +158,46 @@ public:
         cin >> gameoption;
         if(gameoption == 1){
             cout << "Start!\n";
+            Teams T;
+            T.AddToTeam1("John", 5, 100);
+            T.AddToTeam1("Annie", 8, 200);
+            T.AddToTeam1("Andrew", 3, 50);
+
+            T.AddToTeam2("Angeline'a", 3, 50);
+            T.AddToTeam2("Hairdresser", 3, 50);
+            T.AddToTeam2("Tom", 3, 50);
+
+            T.Team1[0].AddItem(Item("Koch P30L(Gun)", 10));
+            T.Team1[1].AddItem(Item("Axe", 12));
+            T.Team2[0].AddItem(Item("Bow", 7));
+            T.Team2[2].AddItem(Item("Scissors", 5));
+
+            T.ShowTeam(1);
+            T.ShowTeam(2);
+            cout << "do you want to FIGHT!?" << endl;
+            cout << "press 1 to say yes or 2 to say no." << endl;
+            
+            int yesno;
+            cin >> yesno;
+            if(yesno == 1){
+                T.Fight();
+
+                
+            }
+            else{
+                cout << "you have enemies bye bye";
+                
+            }
+            
+            
         }
-        else if(gameoption == 2){
-            cout << "bye!\n";
-            exit(0);
-        }
+
     }
-  
-    
 };
 
 int main() {
-    Teams T;
     Game G;
     G.Start();
-
-    T.AddToTeam1("John", 5, 100);
-    T.AddToTeam1("Annie", 8, 200);
-    T.AddToTeam1("Andrew", 3, 50);
-
-    T.AddToTeam2("Angeline'a", 3, 50);
-    T.AddToTeam2("Hairdresser", 3, 50);
-    T.AddToTeam2("Tom", 3, 50);
-
-    T.Team1[0].AddItem(Item("Sword", 10));
-    T.Team1[1].AddItem(Item("Axe", 12));
-    T.Team2[0].AddItem(Item("Bow", 7));
-    T.Team2[2].AddItem(Item("Wand", 5));
-
-    T.ShowTeam(1);
-    T.ShowTeam(2);
-
-    T.Fight();
 
     return 0;
 }
