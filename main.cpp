@@ -221,7 +221,7 @@ public:
                 
             }
             else{
-                cout << "you have enemies bye bye";
+                cout << "you have no enemies bye bye";
                 
             }
             
