@@ -4,6 +4,7 @@
 
 using namespace std;
 
+// Class representing an item that a player can carry
 class Item {
 public:
     string name;
@@ -12,6 +13,7 @@ public:
     Item(string name, int dmg) : name(name), dmg(dmg) {}
 };
 
+// Class representing a player in the combat game
 class Playerc {
 public:
     string name;
@@ -21,38 +23,41 @@ public:
 
     Playerc(string name, int dmg, int hp) : name(name), dmg(dmg), hp(hp){ } 
 
+    // Method to add an item to the player's list of items
     void AddItem(const Item& item) {
         items.push_back(item);
     }
 };
 
+// Forward declaration of the Combat class
 class Combat;
 
+// Class representing teams in the combat game
 class Teams {
 public:
     vector<Playerc> Team1;
     vector<Playerc> Team2;
 
+    // Method to add a player to Team 1
     void AddToTeam1(string name, int dmg, int hp) {
         Team1.push_back(Playerc(name, dmg, hp));
     }
 
+    // Method to add a player to Team 2
     void AddToTeam2(string name, int dmg, int hp) {
         Team2.push_back(Playerc(name, dmg, hp));
     }
 
+    // Method to display information about a team
     void ShowTeam(int teamNumber) {
-
         vector<Playerc> team;
+
         if (teamNumber == 1) {
             printf("\x1B[31m==========TEAM1========== \033[0m\t\t");
-
             team = Team1;
         }
         else if (teamNumber == 2) {
             printf("\x1B[31m==========TEAM2==========\n\033[0m\t\t");
-
-
             team = Team2;
         }
         else {
@@ -63,34 +68,27 @@ public:
         for (int i = 0; i < team.size(); i++) {
             const Playerc& player = team[i];
             cout << "\n=========INFO=============" << endl;
-
             cout << "name: " << player.name << endl;
             cout << "dmg: " << player.dmg << endl;
             cout << "hp: " << player.hp << endl;
             cout << "==========================" << endl;
 
-
             if (!player.items.empty()) {
                 cout << "==========ITEMS===========" << endl;
-
                 for (int j = 0; j < player.items.size(); j++) {
                     const Item& item = player.items[j];
                     cout << "  name: " << item.name << endl;
                     cout << "  dmg: " << item.dmg << endl;
                     cout << "==========================" << endl;
-
                 }
             }
             else {
                 cout << "=========No items=========" << endl;
-
             }
         }
-
     }
 
-        
-        
+    // Method to select a player from a team
     int SelectPlayer(int teamNumber) {
         vector<Playerc>& team = (teamNumber == 1) ? Team1 : Team2;
 
@@ -101,37 +99,32 @@ public:
 
         int playerIndex;
         cout << "==========================" << endl;
-
         cout << "Enter player index: ";
         cin >> playerIndex;
         system("clear");
 
-
         return playerIndex - 1;
     }
 
+    // Method to initiate a fight between selected players
     void Fight();
-
 };
 
+// Class representing combat between two players
 class Combat {
 public:
+    // Method to simulate a fight between two players
     void Fight(Playerc& player1, Playerc& player2) {
-        
         cout << "==========FIGHT===========" << endl;
-
         cout << "Player 1: " << player1.name << " vs Player 2: " << player2.name << endl;
 
         while (player1.hp > 0 && player2.hp > 0) {
             player2.hp -= player1.dmg;
             cout << "==========================" << endl;
-
             cout << player1.name << " deals " << player1.dmg << " damage to " << player2.name << endl;
             cout << "==========================" << endl;
-
             cout << player2.name << " HP: " << player2.hp << endl;
             cout << "==========================" << endl;
-
 
             if (player2.hp <= 0) {
                 cout << player2.name << " has been defeated!" << endl;
@@ -143,17 +136,14 @@ public:
             cout << player1.name << " HP: " << player1.hp << endl;
             cout << "==========================" << endl;
 
-
             int option;
             cout << "press 1 to continue or 2 to exit: ";
             cin >> option;
             system("clear");
 
-
             if (option == 2) {
                 break;
             }
-            
 
             if (player1.hp <= 0) {
                 cout << player1.name << " has been defeated!" << endl;
@@ -163,6 +153,7 @@ public:
     }
 };
 
+// Method to initiate a fight between selected players from Teams
 void Teams::Fight() {
     int team1Index = SelectPlayer(1);
     int team2Index = SelectPlayer(2);
@@ -176,19 +167,20 @@ void Teams::Fight() {
     }
 }
 
-class Game{
+// Class representing the overall game
+class Game {
 public:
-    void Start(){
+    // Method to display the game menu and start the game
+    void Start() {
         int gameoption;
         cout << "========== MENU ==========" << endl;
         cout << "1. Start" << endl;
         cout << "2. Exit" << endl;
-
         cout << "==========================" << endl;
         cin >> gameoption;
         system("clear");
 
-        if(gameoption == 1){
+        if (gameoption == 1) {
             Teams T;
             T.AddToTeam1("John", 5, 100);
             T.AddToTeam1("Annie", 8, 200);
@@ -210,24 +202,17 @@ public:
             cout << "2. No" << endl;
             cout << "==========================" << endl;
 
-            
             int yesno;
             cin >> yesno;
             system("clear");
 
-            if(yesno == 1){
+            if (yesno == 1) {
                 T.Fight();
-
-                
             }
-            else{
+            else {
                 cout << "you have no enemies bye bye";
-                
             }
-            
-            
         }
-
     }
 };
 
@@ -237,3 +222,5 @@ int main() {
 
     return 0;
 }
+
+
